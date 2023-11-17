@@ -9,4 +9,7 @@ This project was created in conjunction with Frontend and Backend.
 - React-Quill
 - Tanstack Query
 
-# On the Backend side, Express.js was used
+# On the Backend side,  technologies such as:
+- Express.js
+- Cors
+- Nanoid
