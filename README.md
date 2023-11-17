@@ -8,6 +8,7 @@ This project was created in conjunction with Frontend and Backend.
 - Axios
 - React-Quill
 - Tanstack Query
+- Firebase for auth
 
 # On the Backend side,  technologies such as:
 - Express.js
