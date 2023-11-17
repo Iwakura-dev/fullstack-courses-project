@@ -1,4 +1,4 @@
-import type { SyntheticEvent } from "react";
+import { useEffect, type SyntheticEvent, useState } from "react";
 // Import the firebase and firebase methods
 import { auth } from "../../entities/firebase/firebase";
 import { signOut } from "firebase/auth";
@@ -7,8 +7,13 @@ import { Box, Center, Container, Flex, Title, Text } from "@mantine/core";
 // Import notification
 import { notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
+// Import axios
+import axios from "axios";
+// Import the post component where the render out the backend
+import { Post } from "../Post/Post";
 
 export const Main = () => {
+  const [renderPost, setRenderPost] = useState([]);
   const logout = (e: SyntheticEvent) => {
     e.preventDefault();
     signOut(auth);
@@ -18,8 +23,15 @@ export const Main = () => {
     });
     window.location.reload();
   };
+  const getAllData = async () => {
+    const { data } = await axios.get("http://localhost:8080/api/course");
+    setRenderPost(data);
+  };
+  useEffect(() => {
+    getAllData();
+  }, []);
   return (
-    <Container>
+    <Container fluid>
       <Center>
         <Flex direction={"column"} align={"center"} gap={"lg"}>
           <Box>
@@ -32,9 +44,9 @@ export const Main = () => {
             )}
             <Text>This page show the all adding courses</Text>
           </Box>
-          <Box></Box>
         </Flex>
       </Center>
+      <Post renderPost={renderPost} />
     </Container>
   );
 };

@@ -54,7 +54,7 @@ export const Header = () => {
     />
   ));
   return (
-    <Box>
+    <Box component={"div"}>
       <Container p={24} size={"xl"}>
         <Flex justify={"space-between"} align={"center"}>
           <Box>
