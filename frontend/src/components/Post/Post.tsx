@@ -1,3 +1,4 @@
+// Import UI elements in our Mantine
 import {
 	Box,
 	Container,
@@ -7,21 +8,28 @@ import {
 	Paper,
 	Button,
 } from '@mantine/core';
-import axios from 'axios';
+// Import types in our axios for the error binding
+import type { AxiosError } from 'axios';
+// Import the interface to types error
+import { IError } from '../../types/axios-error';
+// Import the interface to types to our state
+import { IGetCourseObject } from '../../types/course-object';
+// import the config axios
+import { instance } from '../../config/axios.config';
 
-export const Post = ({ renderPost }) => {
+export const Post: React.FC<{ renderPost: IGetCourseObject[] }> = ({
+	renderPost,
+}) => {
 	const idPost = renderPost.map(item => {
 		return item.id;
 	});
 	const deletePost = async () => {
 		try {
-			const { data } = await axios.delete(
-				`http://localhost:3000/api/all-course/${idPost.join('')}`
-			);
+			await instance.delete(`all-course/${idPost.join('')}`);
 			window.location.reload();
-			console.log(data);
-		} catch (error) {
-			throw new Error(error);
+		} catch (err) {
+			const error = err as AxiosError<IError>;
+			console.log(error.response?.data.message);
 		}
 	};
 

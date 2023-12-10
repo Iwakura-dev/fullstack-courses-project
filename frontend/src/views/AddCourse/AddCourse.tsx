@@ -12,6 +12,8 @@ import {
 	Paper,
 	Button,
 } from '@mantine/core';
+import { AxiosError } from 'axios';
+import { IError } from '../../types/axios-error';
 
 export const AddCourse = () => {
 	const [headerCourse, setHeaderCourse] = useState<string>('');
@@ -45,7 +47,8 @@ export const AddCourse = () => {
 					console.log('Response', response);
 				})
 				.catch(err => {
-					throw new Error(err);
+					const error = err as AxiosError<IError>;
+					console.log(error.response?.data.message);
 				});
 			history('/');
 		}

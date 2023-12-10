@@ -1,9 +1,9 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { Response } from 'express';
-import { ICourseObject } from './types/course-object';
+import { CreateCourseDto } from './dto/create-course.dto';
 @Injectable()
 export class CourseService {
-  private courses: ICourseObject[] = [];
+  private courses: CreateCourseDto[] = [];
   getAllCouresService(res: Response) {
     try {
       res.send(this.courses);
@@ -11,7 +11,7 @@ export class CourseService {
       throw new HttpException(error.message, error.status);
     }
   }
-  createCourseService(course: ICourseObject): ICourseObject {
+  createCourseService(course: CreateCourseDto): CreateCourseDto {
     try {
       this.courses.push(course);
       return course;
@@ -20,6 +20,10 @@ export class CourseService {
     }
   }
   deleteOneCouresService(id: number): void {
-    this.courses = this.courses.filter((i) => i.id !== id);
+    try {
+      this.courses = this.courses.slice(1, id);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
   }
 }

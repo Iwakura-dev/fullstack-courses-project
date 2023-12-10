@@ -8,12 +8,27 @@ import { Box, Center, Container, Flex, Title, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 // Import Axios
-import axios from 'axios';
+import type { AxiosError } from 'axios';
 // Import the post component where the render out the backend
 import { Post } from '../Post/Post';
+// Import the interface to types to our state
+import { IGetCourseObject } from '../../types/course-object';
+// Import the interface to types error
+import { IError } from '../../types/axios-error';
+// import the config axios
+import { instance } from '../../config/axios.config';
 
 export const Main = () => {
-	const [renderPost, setRenderPost] = useState([]);
+	const [renderPost, setRenderPost] = useState<IGetCourseObject[]>([]);
+	const getAllData = async () => {
+		try {
+			const { data } = await instance.get<IGetCourseObject[]>('all-course');
+			setRenderPost(data);
+		} catch (err) {
+			const error = err as AxiosError<IError>;
+			console.log(error.response?.data.message);
+		}
+	};
 	const logout = (e: SyntheticEvent) => {
 		e.preventDefault();
 		signOut(auth);
@@ -22,10 +37,6 @@ export const Main = () => {
 			message: `You logout in your accounts`,
 		});
 		window.location.reload();
-	};
-	const getAllData = async () => {
-		const { data } = await axios.get('http://localhost:3000/api/all-course');
-		setRenderPost(data);
 	};
 	useEffect(() => {
 		getAllData();
