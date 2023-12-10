@@ -1,15 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCourseDto } from './dto/create-course.dto';
-
+import { HttpException, Injectable } from '@nestjs/common';
+import { Response } from 'express';
+import { ICourseObject } from './types/course-object';
 @Injectable()
 export class CourseService {
-  async getAllCoures() {
-    return 'Hello async world!';
+  private courses: ICourseObject[] = [];
+  getAllCouresService(res: Response) {
+    try {
+      res.send(this.courses);
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
   }
-  async createCourse(createCourseDto: CreateCourseDto) {
-    return 'Create course!';
+  createCourseService(course: ICourseObject): ICourseObject {
+    try {
+      this.courses.push(course);
+      return course;
+    } catch (error) {
+      throw new HttpException(error.message, error.status);
+    }
   }
-  async deleteOneCoures(id: number) {
-    return 'Create course!';
+  deleteOneCouresService(id: number): void {
+    this.courses = this.courses.filter((i) => i.id !== id);
   }
 }

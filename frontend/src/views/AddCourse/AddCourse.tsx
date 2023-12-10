@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { instance } from '../../config/axios.config';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {
@@ -20,6 +19,13 @@ export const AddCourse = () => {
 	const [descriptionCourse, setDescriptionCourse] = useState<string>('');
 	const [post, setPost] = useState<boolean>(false);
 	const history = useNavigate();
+	function generateId() {
+		return Math.abs(
+			Math.floor(Math.random() * 9999) / Math.ceil(Math.random() * 2222)
+		);
+	}
+
+	const randomId = generateId();
 	const createCourse = async () => {
 		if (
 			headerCourse === '' &&
@@ -28,21 +34,13 @@ export const AddCourse = () => {
 		) {
 			return alert('Fill in the fields');
 		} else {
-			axios
-				.post(
-					'http://localhost:8080/api/course',
-					{
-						id: nanoid(),
-						headerCourse,
-						authorCourse,
-						descriptionCourse,
-					},
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					}
-				)
+			instance
+				.post('write-course', {
+					id: randomId,
+					header_course: headerCourse,
+					author_name: authorCourse,
+					description_name: descriptionCourse,
+				})
 				.then(response => {
 					console.log('Response', response);
 				})

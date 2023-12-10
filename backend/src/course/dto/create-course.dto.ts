@@ -1,7 +1,8 @@
-import { IsString, IsInt } from 'class-validator';
+import { IsNumber, IsPositive, IsString } from 'class-validator';
 export class CreateCourseDto {
-  @IsInt()
-  id: string;
+  @IsNumber()
+  @IsPositive()
+  id: number;
 
   @IsString()
   author_name: string;
