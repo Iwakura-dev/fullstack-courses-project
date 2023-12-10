@@ -11,6 +11,4 @@ This project was created in conjunction with Frontend and Backend.
 - Firebase for auth
 
 # On the Backend side,  technologies such as:
-- Express.js
-- Cors
-- Nanoid
+- Nest.js / Express.js
